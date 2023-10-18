@@ -1,0 +1,50 @@
+#include <Wire.h>
+#include <Adafruit_MLX90614.h>
+
+// Create an instance of the MLX90614 sensor
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+
+const int buttonPin = 3;  
+const int ecgPin = A0;   
+const int heartRatePin = A1; 
+
+void setup() {
+  Serial.begin(9600);
+  mlx.begin(); 
+  pinMode(buttonPin, INPUT_PULLUP); // Set the push button pin as INPUT with internal pull-up resistor
+}
+
+void loop() {
+  // Read temperature from the MLX90614 sensor
+  float bodyTemperature = mlx.readObjectTempC();
+
+  // Print the temperature to the Serial Monitor
+  Serial.print("Body Temperature: ");
+  Serial.print(bodyTemperature);
+  Serial.println(" °C");
+
+  // Check if the push button is pressed
+  if (digitalRead(buttonPin) == LOW) {
+    Serial.println("Button Pressed!");
+   
+  }
+
+  // Read the ECG value
+  int ecgValue = analogRead(ecgPin);
+  // Print the ECG value to the Serial Monitor
+  Serial.print("ECG Value: ");
+  Serial.println(ecgValue);
+
+  // Read the analog value from the heart rate sensor
+  int sensorValue = analogRead(heartRatePin);
+
+  // Calculate the heart rate (adjust the formula as needed)
+  // This is a simple example; you may need to fine-tune the formula
+  int heartRate = map(sensorValue, 0, 1023, 40, 180);
+
+  // Print the heart rate value to the Serial Monitor
+  Serial.print("Heart Rate: ");
+  Serial.println(heartRate);
+
+  delay(1000); // Adjust the delay as needed between readings
+}
