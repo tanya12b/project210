@@ -1,0 +1,94 @@
+#include <Wire.h>
+#include <Adafruit_MLX90614.h>
+#include <ArduinoMqttClient.h>
+#include <WiFiNINA.h>
+
+// Create an instance of the MLX90614 sensor
+Adafruit_MLX90614 mlx = Adafruit_MLX90614();
+
+// WiFi and MQTT settings
+char ssid[] = "Galaxy M114971";      // Your network SSID (name)
+char pass[] = "987654321";  // Your network password (use for WPA, or use as key for WEP)
+const char broker[] = "broker.mqttdashboard.com";  // MQTT broker address
+int port = 1883;                                    // MQTT broker port
+const char topic[] = "ePMS";                        // MQTT topic
+
+WiFiClient wifiClient;
+MqttClient mqttClient(wifiClient);
+
+const int buttonPin = 3;  // Push button connected to digital pin 3
+const int ecgPin = A0;    // Analog pin connected to the ECG signal
+const int analogPin = A0; // Analog pin to which the heart rate sensor is connected
+
+void setup() {
+  Serial.begin(9600);
+  mlx.begin();  // Initialize the MLX90614 sensor
+  pinMode(buttonPin, INPUT_PULLUP); // Set the push button pin as INPUT with internal pull-up resistor
+
+  // Connect to WiFi
+  Serial.print("Attempting to connect to WPA SSID: ");
+  Serial.println(ssid);
+  while (WiFi.begin(ssid, pass) != WL_CONNECTED) {
+    Serial.print(".");
+    delay(2000);
+  }
+  Serial.println("You're connected to the network");
+
+  // Connect to MQTT broker
+  Serial.print("Attempting to connect to the MQTT broker: ");
+  Serial.println(broker);
+  if (!mqttClient.connect(broker, port)) {
+    Serial.print("MQTT connection failed! Error code = ");
+    Serial.println(mqttClient.connectError());
+    while (1);
+  }
+  Serial.println("You're connected to the MQTT broker!");
+}
+
+void loop() {
+  // Read temperature from the MLX90614 sensor
+  float bodyTemperature = mlx.readObjectTempC();
+
+  // Print the temperature to the Serial Monitor
+  Serial.print("Body Temperature: ");
+  Serial.print(bodyTemperature);
+  Serial.println(" °C");
+
+  // Check if the push button is pressed
+  if (digitalRead(buttonPin) == LOW) {
+    Serial.println("Button Pressed!");
+    // You can add code here to perform some action when the button is pressed
+  }
+
+  // Read the ECG value
+  int ecgValue = analogRead(ecgPin);
+  // Print the ECG value to the Serial Monitor
+  Serial.print("ECG Value: ");
+  Serial.println(ecgValue);
+
+  // Read the analog value from the heart rate sensor
+  int sensorValue = analogRead(analogPin);
+
+  // Calculate the heart rate (adjust the formula as needed)
+  // This is a simple example; you may need to fine-tune the formula
+  int heartRate = map(sensorValue, 0, 1023, 40, 180);
+
+  // Print the heart rate value to the Serial Monitor
+  Serial.print("Heart Rate: ");
+  Serial.println(heartRate);
+
+  // Publish data to MQTT topic
+  if (mqttClient.connected()) {
+    mqttClient.beginMessage(topic);
+    mqttClient.print("Body Temperature: ");
+    mqttClient.print(bodyTemperature, 2); // Two decimal places
+    mqttClient.println(" °C");
+    mqttClient.print("ECG Value: ");
+    mqttClient.println(ecgValue);
+    mqttClient.print("Heart Rate: ");
+    mqttClient.println(heartRate);
+    mqttClient.endMessage();
+  }
+
+  delay(2000); // Adjust the delay as needed between readings
+}
