@@ -1,0 +1,21 @@
+import paho.mqtt.client as mqtt
+
+broker_address = "broker.mqttdashboard.com"
+topic = "ePMS"
+
+def on_message(client, userdata, message):
+    print(f"Received message '{message.payload.decode()}' on topic '{message.topic}'")
+
+client = mqtt.Client()
+client.on_message = on_message
+
+client.connect(broker_address)
+client.loop_start()
+
+client.subscribe(topic)
+
+try:
+    while True:
+        pass
+except KeyboardInterrupt:
+    client.disconnect()
