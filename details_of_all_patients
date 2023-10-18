@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PatientDetailsWidget</class>
+ <widget class="QWidget" name="PatientDetailsWidget">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>800</width>
+    <height>600</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Patient Details</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QLabel" name="titleLabel">
+       <property name="font">
+        <font>
+         <pointsize>24</pointsize>
+         <weight>75</weight>
+         <italic>true</italic>
+        </font>
+       </property>
+       <property name="text">
+        <string>Patient Details</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QFormLayout" name="formLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="nameLabel">
+       <property name="text">
+        <string>Name:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QLabel" name="nameValueLabel">
+       <property name="text">
+        <string>John Doe</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="ageLabel">
+       <property name="text">
+        <string>Age:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="QLabel" name="ageValueLabel">
+       <property name="text">
+        <string>25</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="heartRateLabel">
+       <property name="text">
+        <string>Avg. Heart Rate:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="1">
+      <widget class="QLabel" name="heartRateValueLabel">
+       <property name="text">
+        <string>75 BPM</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLabel" name="conditionLabel">
+       <property name="text">
+        <string>Condition based on Heart Data:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="1">
+      <widget class="QLabel" name="conditionValueLabel">
+       <property name="text">
+        <string>Normal</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="0">
+      <widget class="QLabel" name="meanDeviationLabel">
+       <property name="text">
+        <string>Mean Deviation:</string>
+       </property>
+      </widget>
+     </item>
+     <item row="4" column="1">
+      <widget class="QLabel" name="meanDeviationValueLabel">
+       <property name="text">
+        <string>5</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QTextEdit" name="emailTextEdit">
+     <property name="placeholderText">
+      <string>Compose email to Guardian</string>
+     </property>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="buttonLayout">
+     <item>
+      <widget class="QPushButton" name="sendEmailButton">
+       <property name="text">
+        <string>Send Email to Guardian</string>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <widget class="QPushButton" name="goBackButton">
+       <property name="text">
+        <string>Go Back</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
